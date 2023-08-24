@@ -94,6 +94,22 @@ class test_fileStorage(unittest.TestCase):
         """ Confirm __objects is a dict """
         self.assertEqual(type(storage.all()), dict)
 
+    def test_storage_count(self):
+        """ Tests the count method of FileStorage """
+        from models.state import State
+        count = storage.count()
+        new = State()
+        new.save()
+        new_count = storage.count()
+        self.assertTrue(new_count > count)
+
+    def test_storage_get(self):
+        """ Tests the get method of FileStorage """
+        from models.state import State
+        new = State()
+        new.save()
+        self.assertEqual(new, storage.get(State, new.id))
+
     def test_key_format(self):
         """ Key is properly formatted """
         new = BaseModel()
