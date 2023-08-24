@@ -58,6 +58,33 @@ class FileStorage:
             json.dump(my_dict, f)
             # print("OBJECT SERIALIZED TO JSON FILE")
 
+    def get(self, cls, id):
+        """returns the object based on the class and ID
+            or None if not found
+        """
+        key = "{}.{}".format(cls.__name__, id)
+        try:
+            obj = self.__objects[key]
+        except:
+            obj = None
+        return obj
+
+    def count(self, cls=None):
+        """returns the number of objects in storage
+            matching the given class. If no class is passed
+            returns the count of all objects in storage
+        """
+        obj_count = 0
+        if cls:
+            for key, value in self.__objects.items():
+                if type(value) == cls:
+                    obj_count += 1
+        else:
+            for item in self.__objects:
+                obj_count += 1
+
+        return obj_count
+
     def reload(self):
         """deserialize JSON file to __objects
         """
